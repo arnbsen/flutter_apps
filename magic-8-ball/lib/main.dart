@@ -18,9 +18,11 @@ class Magic8BallContainer extends StatelessWidget {
         title: Text('Ask Me Anything'),
       ),
       backgroundColor: Colors.blue,
-      body: Center(
-        child: Magic8Ball(),
-      )
+      body: SafeArea(
+        child: Center(
+          child: Magic8Ball(),
+        ),
+      ) 
     );
   }
 }

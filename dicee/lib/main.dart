@@ -24,8 +24,9 @@ class DiceContainer extends StatelessWidget {
         title: Text('Dicee'),
       ),
       backgroundColor: Colors.red,
-      body: DiceArea()
-      
+      body: SafeArea(
+        child: DiceArea(),
+        )
     );
   }
 }
