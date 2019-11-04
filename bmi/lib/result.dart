@@ -38,25 +38,28 @@ class ResultPage extends StatelessWidget {
               type: this.bmi.typeInfo(),
             ),
           ),
-          ResuableCard(
-            flex: 10,
-            colour: Color(0xFFc0392b),
-            child: GestureDetector(
-              onTap: () {
-                Navigator.pop(context);
-              },
-              child: Center(
-                  child: Text(
-                  'RE - CALCULATE',
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 30,
-                    fontWeight: FontWeight.bold
-                  ),
+          GestureDetector(
+            onTap: () {
+              Navigator.pop(context);
+            },
+            child: Container(
+              height: 50,
+              margin: EdgeInsets.symmetric(horizontal: 10),
+              alignment: Alignment.center,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(10.0),
+                color: Color(0xFFc0392b) 
+              ),
+              child: Text(
+                'RE CALCULATE',
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 30
                 ),
-              )
+                textAlign: TextAlign.center,
+              ),
             ),
-          ),
+          )
         ],
       ),
       )
