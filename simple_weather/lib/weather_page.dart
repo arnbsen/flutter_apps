@@ -1,12 +1,16 @@
 import 'package:flutter/material.dart';
-import 'package:simple_weather/constants.dart';
 class WeatherPage extends StatelessWidget {
-  const WeatherPage({Key key}) : super(key: key);
+  
+  final Map<String, dynamic> weatherData;
+
+  const WeatherPage({Key key, @required this.weatherData}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       home: Scaffold(
         appBar: AppBar(
+          backgroundColor: Color(0xFF1abc9c),
           leading: Row(
             children: <Widget>[
               IconButton(
@@ -17,25 +21,29 @@ class WeatherPage extends StatelessWidget {
               ),
             ],
           ),
-          title: Text('LONDON, GB'),
+          title: Text( weatherData['name'] + ', ' +  weatherData['sys']['country']),
         ),
-        body: InfoWidget(),
+        body: InfoWidget(weatherData: this.weatherData,),
       ),
     );
   }
 }
 class InfoWidget extends StatefulWidget {
-  InfoWidget({Key key}) : super(key: key);
+
+  final Map<String, dynamic> weatherData;
+
+  InfoWidget({Key key, @required this.weatherData}) : super(key: key);
 
   @override
-  _InfoWidgetState createState() => _InfoWidgetState();
+  _InfoWidgetState createState() => _InfoWidgetState(weatherData: this.weatherData);
 }
 
   
 
 class _InfoWidgetState extends State<InfoWidget> {
 
-
+  Map<String, dynamic> weatherData;
+  _InfoWidgetState({this.weatherData});
 
   @override
   Widget build(BuildContext context) {
@@ -48,7 +56,7 @@ class _InfoWidgetState extends State<InfoWidget> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
-                 
+                 Text((weatherData['main']['temp'] - 273.15).toInt().toString())
                 ],
               )
             ],

@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+
+import 'package:simple_weather/weather_api_helper.dart';
 import 'package:simple_weather/weather_page.dart';
 import 'constants.dart';
 void main() => runApp(MyApp());
@@ -29,12 +31,24 @@ class StartPage extends StatefulWidget {
 
 class _StartPageState extends State<StartPage> {
   
-  void _onPressed() {
-    Navigator.push(context, 
-                      MaterialPageRoute(
-                        builder: (context) => WeatherPage()
-                      )
-                    );
+  final weatherApiHelper = WeatherAPIHelper();
+
+  bool showLoader = false;
+
+  void _onPressedGo() {
+    this.showLoader = true;
+    
+  }
+
+  void _onPressedAutoDetect() async {
+    this.showLoader = true;
+    weatherApiHelper.getAutoDetectedLocationWeather().then((value) => 
+      Navigator.push(context, 
+            MaterialPageRoute(
+            builder: (context) => WeatherPage(weatherData: value,)
+          )
+        )
+    );
   }
 
   @override
@@ -57,8 +71,8 @@ class _StartPageState extends State<StartPage> {
                 ),
                 FlatButton(
                   color: Colors.white,
-                  onPressed: () {
-
+                  onPressed: () {  
+                      _onPressedAutoDetect();
                   },
                   padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
                   child: Row(
@@ -84,6 +98,7 @@ class _StartPageState extends State<StartPage> {
                 TextField(
                   cursorColor: Color(0xFF1abc9c),
                   style: GlobalStyles.getTextStyle(20, Color(0xFF1abc9c), FontWeight.w300),
+                  enabled: !showLoader,
                   decoration: InputDecoration(
                     filled: true,
                     fillColor: Colors.white,
@@ -94,7 +109,9 @@ class _StartPageState extends State<StartPage> {
                 SizedBox(height: 15,),
                 RaisedButton(
                   onPressed: () {
-                    _onPressed();
+                    setState(() {
+                      _onPressedGo();
+                    });
                   },
                   color: Color(0xFF16a085),
                   child: Container(
@@ -111,6 +128,16 @@ class _StartPageState extends State<StartPage> {
                       ],
                     ),
                   )
+                ),
+                SizedBox(
+                  height: 10,
+                ),
+                Visibility(
+                  visible: false,
+                  child: CircularProgressIndicator(
+                    strokeWidth: 2,
+                    backgroundColor: Colors.yellow
+                  ),
                 )
               ],
             ),
