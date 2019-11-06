@@ -37,6 +37,26 @@ class _StartPageState extends State<StartPage> {
 
   String _cityName;
 
+  void _showErrorDialog(String err) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return new AlertDialog(
+          title: Text('Error'),
+          content: Text(err),
+          actions: <Widget>[
+            FlatButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: Text('CLOSE'),
+            )
+          ],
+        );
+      }
+    );
+  }
+
 
   void _onPressedAutoDetect() async {
     setState(() {
@@ -52,7 +72,12 @@ class _StartPageState extends State<StartPage> {
             )
           );
       }
-    );
+    ).catchError((err) {
+      setState(() {
+            this._showLoader = false;
+          });
+      this._showErrorDialog(err.toString());
+    });
   }
 
   void _onPressedByName() async {
@@ -62,12 +87,17 @@ class _StartPageState extends State<StartPage> {
       _weatherApiHelper.getWeatherByName(this._cityName).then((value) {
            setState(() {
             this._showLoader = false;
-        });
+          });
         Navigator.push(context, 
               MaterialPageRoute(
               builder: (context) => WeatherPage(weatherData: value,)
             )
           );
+      }).catchError((err) {
+        setState(() {
+            this._showLoader = false;
+          });
+        this._showErrorDialog(err.toString());
       });
   }
 

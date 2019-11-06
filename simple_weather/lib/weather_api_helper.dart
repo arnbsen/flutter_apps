@@ -16,7 +16,8 @@ class WeatherAPIHelper {
       var value = jsonDecode(response.body);
       return Future.value(value);
     } else {
-      return Future.error('Oops! Something bad happened');
+
+      return Future.error('Oops! City not Found');
     }
   }
 
@@ -27,10 +28,12 @@ class WeatherAPIHelper {
 
   Future<Map<String, dynamic>> _getWeatherByLatAndLng(double lat, double lng) async {
     http.Response response = await http.get('https://api.openweathermap.org/data/2.5/weather?lat=$lat&lon=$lng&appid=$apiKey');
+    
     if (response.statusCode == 200) {
       var value = jsonDecode(response.body);
       return Future.value(value);
     } else {
+      
       return Future.error('Oops! Something bad happened');
     }
   }
