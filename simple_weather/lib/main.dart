@@ -31,24 +31,44 @@ class StartPage extends StatefulWidget {
 
 class _StartPageState extends State<StartPage> {
   
-  final weatherApiHelper = WeatherAPIHelper();
+  final _weatherApiHelper = WeatherAPIHelper();
 
-  bool showLoader = false;
+  bool _showLoader = false;
 
-  void _onPressedGo() {
-    this.showLoader = true;
-    
-  }
+  String _cityName;
+
 
   void _onPressedAutoDetect() async {
-    this.showLoader = true;
-    weatherApiHelper.getAutoDetectedLocationWeather().then((value) => 
-      Navigator.push(context, 
-            MaterialPageRoute(
-            builder: (context) => WeatherPage(weatherData: value,)
-          )
-        )
+    setState(() {
+      this._showLoader = true;
+    });
+    _weatherApiHelper.getAutoDetectedLocationWeather().then((value) {
+        setState(() {
+            this._showLoader = false;
+        });
+        Navigator.push(context, 
+              MaterialPageRoute(
+              builder: (context) => WeatherPage(weatherData: value,)
+            )
+          );
+      }
     );
+  }
+
+  void _onPressedByName() async {
+      setState(() {
+        this._showLoader = true;
+      });
+      _weatherApiHelper.getWeatherByName(this._cityName).then((value) {
+           setState(() {
+            this._showLoader = false;
+        });
+        Navigator.push(context, 
+              MaterialPageRoute(
+              builder: (context) => WeatherPage(weatherData: value,)
+            )
+          );
+      });
   }
 
   @override
@@ -98,7 +118,10 @@ class _StartPageState extends State<StartPage> {
                 TextField(
                   cursorColor: Color(0xFF1abc9c),
                   style: GlobalStyles.getTextStyle(20, Color(0xFF1abc9c), FontWeight.w300),
-                  enabled: !showLoader,
+                  enabled: !_showLoader,
+                  onChanged: (value) {
+                    this._cityName = value;
+                  },
                   decoration: InputDecoration(
                     filled: true,
                     fillColor: Colors.white,
@@ -110,7 +133,7 @@ class _StartPageState extends State<StartPage> {
                 RaisedButton(
                   onPressed: () {
                     setState(() {
-                      _onPressedGo();
+                      _onPressedByName();
                     });
                   },
                   color: Color(0xFF16a085),
@@ -133,7 +156,7 @@ class _StartPageState extends State<StartPage> {
                   height: 10,
                 ),
                 Visibility(
-                  visible: false,
+                  visible: this._showLoader,
                   child: CircularProgressIndicator(
                     strokeWidth: 2,
                     backgroundColor: Colors.yellow
