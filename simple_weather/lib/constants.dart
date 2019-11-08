@@ -11,7 +11,7 @@ class GlobalStyles {
 }
 class WeatherFactory {
   static Map<String, Icon> iconProvider = {
-        "01d": Icon(Icons.brightness_high, size: 80, color: Colors.orange,),
+        "01d": Icon(Icons.brightness_high, size: 80, color: Colors.yellow,),
         "01n": Icon(Icons.brightness_3, size: 80, color: Colors.white,),
         "02d": Icon(FontAwesomeIcons.cloudSun, size: 80, color: Colors.white,),
         "02n": Icon(FontAwesomeIcons.cloudSun, size: 80, color: Colors.white,),
